@@ -229,9 +229,9 @@ export const DataBackupModal: React.FC = () => {
                   alert('Đã nạp dữ liệu mẫu thành công!');
                 }
               }}
-              className="w-full flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100 active:scale-98 transition-all"
             >
-              <Sparkles size={14} />
+              <Sparkles size={16} />
               <span>Nạp Dữ Liệu Mẫu (35+ Giao Dịch)</span>
             </button>
 
@@ -242,9 +242,9 @@ export const DataBackupModal: React.FC = () => {
                   alert('Đã xóa dữ liệu.');
                 }
               }}
-              className="w-full flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 active:scale-98 transition-all"
             >
-              <Trash2 size={14} />
+              <Trash2 size={16} />
               <span>Xóa Toàn Bộ Lịch Sử Chi Tiêu</span>
             </button>
           </div>
@@ -264,9 +264,9 @@ export const DataBackupModal: React.FC = () => {
 
             <button
               onClick={() => setShowAddCat(!showAddCat)}
-              className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 hover:bg-emerald-100 transition-colors"
+              className="flex items-center gap-1.5 text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 hover:bg-emerald-100 active:scale-95 transition-all"
             >
-              <Plus size={13} />
+              <Plus size={15} />
               <span>Thêm mới</span>
             </button>
           </div>

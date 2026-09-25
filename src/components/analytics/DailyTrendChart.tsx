@@ -73,27 +73,27 @@ export const DailyTrendChart: React.FC<DailyTrendChartProps> = ({
         </div>
 
         {/* View toggle pills */}
-        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl self-start sm:self-auto">
+        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 sm:p-1.5 rounded-xl self-start sm:self-auto gap-1">
           <button
             onClick={() => setChartMode('bar')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               chartMode === 'bar'
                 ? 'bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <BarChart2 size={12} />
+            <BarChart2 size={14} />
             <span>Từng ngày</span>
           </button>
           <button
             onClick={() => setChartMode('area')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               chartMode === 'area'
                 ? 'bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 shadow-sm'
-                : 'text-slate-600 dark:text-slate-400'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <TrendingUp size={12} />
+            <TrendingUp size={14} />
             <span>Tích lũy</span>
           </button>
         </div>

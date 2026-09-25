@@ -109,27 +109,27 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
           </div>
 
           {/* Desktop Hover Action Buttons */}
-          <div className="hidden sm:flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={() => onDuplicate(expense.id)}
               title="Nhân bản"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
             >
-              <Copy size={14} />
+              <Copy size={16} />
             </button>
             <button
               onClick={() => onEdit(expense)}
               title="Chỉnh sửa"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
             >
-              <Edit2 size={14} />
+              <Edit2 size={16} />
             </button>
             <button
               onClick={handleDelete}
               title="Xóa"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
             >
-              <Trash2 size={14} />
+              <Trash2 size={16} />
             </button>
           </div>
 
@@ -137,14 +137,14 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
           <div className="relative sm:hidden">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="p-1 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="w-8 h-8 flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all"
             >
-              <MoreVertical size={16} />
+              <MoreVertical size={18} />
             </button>
 
             {showMenu && (
               <div
-                className="absolute right-0 top-full mt-1 w-32 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-30 text-xs"
+                className="absolute right-0 top-full mt-1.5 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-30 text-xs sm:text-sm"
                 onMouseLeave={() => setShowMenu(false)}
               >
                 <button
@@ -152,9 +152,9 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
                     setShowMenu(false);
                     onDuplicate(expense.id);
                   }}
-                  className="flex items-center gap-2 w-full px-3 py-1.5 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
+                  className="flex items-center gap-2.5 w-full px-3.5 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 font-medium"
                 >
-                  <Copy size={13} />
+                  <Copy size={15} />
                   <span>Nhân bản</span>
                 </button>
                 <button
@@ -162,9 +162,9 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
                     setShowMenu(false);
                     onEdit(expense);
                   }}
-                  className="flex items-center gap-2 w-full px-3 py-1.5 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700"
+                  className="flex items-center gap-2.5 w-full px-3.5 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 font-medium"
                 >
-                  <Edit2 size={13} />
+                  <Edit2 size={15} />
                   <span>Sửa</span>
                 </button>
                 <button
@@ -172,9 +172,9 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
                     setShowMenu(false);
                     handleDelete();
                   }}
-                  className="flex items-center gap-2 w-full px-3 py-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                  className="flex items-center gap-2.5 w-full px-3.5 py-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-semibold"
                 >
-                  <Trash2 size={13} />
+                  <Trash2 size={15} />
                   <span>Xóa</span>
                 </button>
               </div>

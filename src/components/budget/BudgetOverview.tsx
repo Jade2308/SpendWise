@@ -101,10 +101,10 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({
                 </h3>
                 <button
                   onClick={handleOpenEditMonthly}
-                  className="p-1 rounded-lg text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="p-1.5 rounded-xl text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                   title="Chỉnh sửa hạn mức"
                 >
-                  <Edit3 size={14} />
+                  <Edit3 size={16} />
                 </button>
               </div>
               <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
@@ -219,10 +219,10 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({
 
                   <button
                     onClick={() => handleOpenEditCategory(cat)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-white dark:hover:bg-slate-700 transition-colors shrink-0"
+                    className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-white dark:hover:bg-slate-700 transition-colors shrink-0"
                     title="Cài đặt hạn mức"
                   >
-                    <Settings size={14} />
+                    <Settings size={16} />
                   </button>
                 </div>
 
@@ -302,17 +302,17 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({
                 onChange={(e) => setCategoryLimitInput(e.target.value.replace(/[^\d]/g, ''))}
                 className="w-full text-lg font-bold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setEditingCategory(null)}
-                  className="px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                  className="px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-bold bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-600/20"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all"
                 >
                   Lưu hạn mức
                 </button>
@@ -341,17 +341,17 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({
                 onChange={(e) => setMonthlyInput(e.target.value.replace(/[^\d]/g, ''))}
                 className="w-full text-lg font-bold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setEditingMonthly(false)}
-                  className="px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                  className="px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-bold bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-600/20"
+                  className="px-5 py-2.5 text-xs sm:text-sm font-bold bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all"
                 >
                   Cập nhật
                 </button>

@@ -71,9 +71,9 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
         </p>
         <button
           onClick={onOpenAddExpense}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-bold shadow-md shadow-emerald-500/20 active:scale-95 transition-all"
         >
-          <Plus size={16} />
+          <Plus size={18} />
           <span>Ghi khoản chi mới ngay</span>
         </button>
       </div>
@@ -100,9 +100,9 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
 
         <button
           onClick={() => exportExpensesToCSV(expenses, categories, `SpendWise_${periodLabel}.csv`)}
-          className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors self-start sm:self-auto"
+          className="flex items-center justify-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors self-start sm:self-auto"
         >
-          <Download size={13} />
+          <Download size={15} />
           <span>Xuất Excel CSV</span>
         </button>
       </div>

@@ -100,26 +100,26 @@ export const SpendingCalendar: React.FC<SpendingCalendarProps> = ({
           </div>
 
           {/* Month Navigation */}
-          <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 sm:p-1 rounded-xl">
+          <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 sm:p-1.5 rounded-xl gap-0.5">
             <button
               onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-              className="p-1 sm:p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all"
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all"
               title="Tháng trước"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={18} />
             </button>
             <button
               onClick={() => setCurrentMonth(new Date())}
-              className="px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900"
+              className="px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900"
             >
               Hôm nay
             </button>
             <button
               onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-              className="p-1 sm:p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all"
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all"
               title="Tháng sau"
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>

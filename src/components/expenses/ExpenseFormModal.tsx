@@ -135,16 +135,16 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
           {error && (
-            <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs font-semibold">
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs sm:text-sm font-semibold">
               {error}
             </div>
           )}
@@ -180,7 +180,7 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
             <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
               Danh mục chi tiêu <span className="text-rose-500">*</span>
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2 max-h-40 overflow-y-auto pr-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1">
               {categories.map((cat) => {
                 const isSelected = categoryId === cat.id;
                 return (
@@ -188,19 +188,19 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
                     type="button"
                     key={cat.id}
                     onClick={() => setCategoryId(cat.id)}
-                    className={`flex items-center gap-2 p-2 sm:p-2.5 rounded-xl border text-xs text-left transition-all ${
+                    className={`flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm text-left transition-all ${
                       isSelected
                         ? 'border-emerald-500 bg-emerald-50/80 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-200 font-bold shadow-sm'
                         : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     <div
-                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0"
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0"
                       style={{ backgroundColor: cat.bgLight }}
                     >
-                      <CategoryIcon name={cat.icon} size={13} color={cat.color} />
+                      <CategoryIcon name={cat.icon} size={15} color={cat.color} />
                     </div>
-                    <span className="truncate text-[11px] sm:text-xs">{cat.name}</span>
+                    <span className="truncate text-xs sm:text-sm font-medium">{cat.name}</span>
                   </button>
                 );
               })}
@@ -217,7 +217,7 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
 
@@ -228,7 +228,7 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value as PaymentMethodType)}
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 {PAYMENT_METHODS.map((pm) => (
                   <option key={pm.id} value={pm.id}>
@@ -324,19 +324,19 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
           </div>
 
           {/* Footer Submit Buttons */}
-          <div className="pt-2 flex items-center justify-end gap-2 shrink-0">
+          <div className="pt-2 flex items-center justify-end gap-2.5 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+              className="px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
             >
               Hủy
             </button>
             <button
               type="submit"
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl shadow-md shadow-emerald-500/25 active:scale-95 transition-all"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl shadow-md shadow-emerald-500/25 active:scale-95 transition-all"
             >
-              <Save size={15} />
+              <Save size={17} />
               <span>{initialData ? 'Lưu thay đổi' : 'Lưu khoản chi'}</span>
             </button>
           </div>

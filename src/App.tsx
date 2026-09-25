@@ -111,7 +111,7 @@ export function App() {
       />
 
       {/* Main Body Content with bottom padding for mobile bottom bar */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-3.5 sm:py-6 pb-24 md:pb-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-3.5 sm:py-6 pb-28 md:pb-8">
         {/* Tab 1: Analytics & Reports */}
         {activeTab === 'analytics' && (
           <div className="space-y-4 sm:space-y-6 animate-fadeIn">
