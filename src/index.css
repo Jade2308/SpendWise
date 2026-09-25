@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -22,7 +24,7 @@
   }
 
   .dark body {
-    background-color: #06110d;
+    background-color: #020617;
     color: #f1f5f9;
   }
 }

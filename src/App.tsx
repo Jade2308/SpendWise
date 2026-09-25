@@ -43,10 +43,13 @@ export function App() {
 
   // Apply theme to document element
   useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
+      metaThemeColor?.setAttribute('content', '#020617');
     } else {
       document.documentElement.classList.remove('dark');
+      metaThemeColor?.setAttribute('content', '#059669');
     }
   }, [theme]);
 

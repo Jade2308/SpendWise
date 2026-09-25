@@ -136,10 +136,13 @@ export const useExpenseStore = create<ExpenseState>()(
 
       setTheme: (theme) => {
         set({ theme });
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (theme === 'dark') {
           document.documentElement.classList.add('dark');
+          metaThemeColor?.setAttribute('content', '#020617');
         } else {
           document.documentElement.classList.remove('dark');
+          metaThemeColor?.setAttribute('content', '#059669');
         }
       },
 
