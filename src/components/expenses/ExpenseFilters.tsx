@@ -6,7 +6,6 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import type { Category, FilterState } from '../../types/expense';
-import { PAYMENT_METHODS } from '../../constants/paymentMethods';
 
 interface ExpenseFiltersProps {
   filter: FilterState;
@@ -27,7 +26,6 @@ export const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
   const hasActiveFilters =
     filter.searchQuery.trim() !== '' ||
     filter.categoryId !== 'all' ||
-    filter.paymentMethod !== 'all' ||
     filter.minAmount !== undefined ||
     filter.maxAmount !== undefined ||
     filter.sortBy !== 'date_desc';
@@ -96,7 +94,7 @@ export const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
           <button
             onClick={() => setShowAdvanced(!showAdvanced)}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
-              showAdvanced || filter.paymentMethod !== 'all' || filter.minAmount !== undefined || filter.maxAmount !== undefined
+              showAdvanced || filter.minAmount !== undefined || filter.maxAmount !== undefined
                 ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
                 : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
@@ -120,24 +118,7 @@ export const ExpenseFilters: React.FC<ExpenseFiltersProps> = ({
 
       {/* Advanced Filters Expandable Section */}
       {showAdvanced && (
-        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-2.5 animate-fadeIn">
-          <div>
-            <label className="block text-[11px] font-semibold text-slate-500 mb-1">
-              Phương thức thanh toán
-            </label>
-            <select
-              value={filter.paymentMethod}
-              onChange={(e) => onFilterChange({ paymentMethod: e.target.value })}
-              className="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm"
-            >
-              <option value="all">Tất cả phương thức</option>
-              {PAYMENT_METHODS.map((pm) => (
-                <option key={pm.id} value={pm.id}>
-                  {pm.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-2.5 animate-fadeIn">
 
           <div>
             <label className="block text-[11px] font-semibold text-slate-500 mb-1">

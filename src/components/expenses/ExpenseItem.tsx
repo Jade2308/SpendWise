@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import type { Expense, Category } from '../../types/expense';
 import { formatVND } from '../../utils/currency';
-import { PAYMENT_METHODS } from '../../constants/paymentMethods';
 import { CategoryIcon } from '../common/CategoryIcon';
 
 interface ExpenseItemProps {
@@ -30,8 +29,6 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
-
-  const payment = PAYMENT_METHODS.find((p) => p.id === expense.paymentMethod);
 
   const handleDelete = () => {
     if (window.confirm(`Bạn có chắc muốn xóa khoản chi "${expense.note || category?.name}" này không?`)) {
@@ -78,11 +75,6 @@ export const ExpenseItem: React.FC<ExpenseItemProps> = ({
                 }}
               >
                 {category?.name || 'Chung'}
-              </span>
-
-              {/* Payment Method */}
-              <span className="truncate">
-                • {payment?.name || expense.paymentMethod}
               </span>
 
               {/* Receipt icon if available */}

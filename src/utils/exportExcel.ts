@@ -1,5 +1,4 @@
 import type { Expense, Category, AnalyticsSummary } from '../types/expense';
-import { PAYMENT_METHODS } from '../constants/paymentMethods';
 import { formatDateVN } from './date';
 import { formatVND } from './currency';
 
@@ -9,14 +8,12 @@ export function exportExpensesToCSV(
   fileName: string = 'SpendWise_DanhSachChiTieu.csv'
 ) {
   const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
-  const paymentMap = new Map(PAYMENT_METHODS.map((p) => [p.id, p.name]));
 
   // CSV Headers
-  const headers = ['Mã GD', 'Ngày chi', 'Danh mục', 'Số tiền (VND)', 'Phương thức thanh toán', 'Ghi chú', 'Định kỳ'];
+  const headers = ['Mã GD', 'Ngày chi', 'Danh mục', 'Số tiền (VND)', 'Ghi chú', 'Định kỳ'];
 
   const rows = expenses.map((item) => {
     const categoryName = categoryMap.get(item.categoryId) || 'Khác';
-    const paymentName = paymentMap.get(item.paymentMethod) || item.paymentMethod;
     const isRecurringText = item.isRecurring ? 'Có' : 'Không';
     const cleanNote = (item.note || '').replace(/"/g, '""');
 
@@ -25,7 +22,6 @@ export function exportExpensesToCSV(
       `"${formatDateVN(item.date)}"`,
       `"${categoryName}"`,
       item.amount,
-      `"${paymentName}"`,
       `"${cleanNote}"`,
       `"${isRecurringText}"`,
     ].join(',');
@@ -52,7 +48,6 @@ export function printFinancialReport(
   periodLabel: string
 ) {
   const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
-  const paymentMap = new Map(PAYMENT_METHODS.map((p) => [p.id, p.name]));
 
   const printWindow = window.open('', '_blank');
   if (!printWindow) return;
@@ -66,7 +61,6 @@ export function printFinancialReport(
         <td style="padding: 8px; border: 1px solid #e2e8f0;">${formatDateVN(e.date)}</td>
         <td style="padding: 8px; border: 1px solid #e2e8f0;">${categoryMap.get(e.categoryId) || 'Khác'}</td>
         <td style="padding: 8px; border: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">${formatVND(e.amount)}</td>
-        <td style="padding: 8px; border: 1px solid #e2e8f0;">${paymentMap.get(e.paymentMethod) || e.paymentMethod}</td>
         <td style="padding: 8px; border: 1px solid #e2e8f0;">${e.note || '-'}</td>
       </tr>
     `
@@ -129,7 +123,6 @@ export function printFinancialReport(
             <th style="width: 100px;">Ngày</th>
             <th style="width: 140px;">Danh mục</th>
             <th style="width: 120px; text-align: right;">Số tiền</th>
-            <th style="width: 120px;">Phương thức</th>
             <th>Ghi chú</th>
           </tr>
         </thead>

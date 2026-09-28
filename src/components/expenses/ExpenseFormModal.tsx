@@ -8,7 +8,6 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { Expense, Category, PaymentMethodType } from '../../types/expense';
-import { PAYMENT_METHODS } from '../../constants/paymentMethods';
 import { formatVND, parseVND } from '../../utils/currency';
 import { getTodayString } from '../../utils/date';
 import { CategoryIcon } from '../common/CategoryIcon';
@@ -207,36 +206,17 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
             </div>
           </div>
 
-          {/* Date & Payment Method Row */}
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
-            <div>
-              <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
-                Ngày chi <span className="text-rose-500">*</span>
-              </label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
-                Phương thức
-              </label>
-              <select
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value as PaymentMethodType)}
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                {PAYMENT_METHODS.map((pm) => (
-                  <option key={pm.id} value={pm.id}>
-                    {pm.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* Date Input */}
+          <div>
+            <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+              Ngày chi <span className="text-rose-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
           </div>
 
           {/* Note Input */}

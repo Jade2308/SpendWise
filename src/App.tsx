@@ -10,7 +10,6 @@ import { CategoryDonutChart } from './components/analytics/CategoryDonutChart';
 import { DailyTrendChart } from './components/analytics/DailyTrendChart';
 import { MonthlyComparisonBar } from './components/analytics/MonthlyComparisonBar';
 import { WeekdayHeatmapChart } from './components/analytics/WeekdayHeatmapChart';
-import { PaymentMethodChart } from './components/analytics/PaymentMethodChart';
 import { SpendingCalendar } from './components/analytics/SpendingCalendar';
 import { ExpenseFilters } from './components/expenses/ExpenseFilters';
 import { ExpenseList } from './components/expenses/ExpenseList';
@@ -64,7 +63,6 @@ export function App() {
     dailyStats,
     monthlyStats,
     weekdayStats,
-    paymentStats,
     periodLabel,
   } = useExpenseAnalytics({
     expenses,
@@ -149,13 +147,9 @@ export function App() {
               </div>
             </div>
 
-            {/* Deep Analytics: Habit Analysis & Payment Breakdown */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Deep Analytics: Habit Analysis & Monthly Comparison */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <WeekdayHeatmapChart weekdayStats={weekdayStats} />
-              <PaymentMethodChart
-                paymentStats={paymentStats}
-                totalSpend={summary.totalSpend}
-              />
               <MonthlyComparisonBar monthlyStats={monthlyStats} />
             </div>
           </div>
