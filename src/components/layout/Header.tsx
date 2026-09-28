@@ -4,7 +4,6 @@ import {
   Plus,
   Moon,
   Sun,
-  Sparkles,
   Printer,
   Calendar,
 } from 'lucide-react';
@@ -41,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
   onManualSync,
   errorMessage,
 }) => {
-  const { theme, toggleTheme, filter, setFilter, loadMockData } = useExpenseStore();
+  const { theme, toggleTheme, filter, setFilter } = useExpenseStore();
 
   const handleRangeChange = (range: DateRangeOption) => {
     setFilter({
@@ -82,19 +81,6 @@ export const Header: React.FC<HeaderProps> = ({
                 onManualSync={onManualSync}
                 errorMessage={errorMessage}
               />
-
-              <button
-                onClick={() => {
-                  if (window.confirm('Tải lại dữ liệu mẫu (35+ giao dịch)?')) {
-                    loadMockData();
-                  }
-                }}
-                title="Dữ liệu mẫu"
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 rounded-xl hover:bg-emerald-100 transition-colors"
-              >
-                <Sparkles size={16} className="text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Dữ liệu mẫu</span>
-              </button>
 
               <button
                 onClick={onPrintReport}

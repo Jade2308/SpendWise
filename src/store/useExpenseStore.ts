@@ -47,7 +47,7 @@ const defaultFilter: FilterState = {
 export const useExpenseStore = create<ExpenseState>()(
   persist(
     (set, get) => ({
-      expenses: getMockExpenses(), // Initialize with rich demo data so app is never blank
+      expenses: [], // Mặc định danh sách trống (không dùng dữ liệu giả)
       categories: DEFAULT_CATEGORIES,
       monthlyBudget: 15000000, // 15 million VND default monthly budget
       theme: 'light',
@@ -229,16 +229,22 @@ export const useExpenseStore = create<ExpenseState>()(
         set({
           expenses: [],
         });
+        syncApi.clearAllExpenses().catch(console.warn);
       },
     }),
     {
       name: 'spendwise-storage',
       partialize: (state) => ({
-        expenses: state.expenses,
+        expenses: (state.expenses || []).filter((e) => !e.id.startsWith('mock-exp-')),
         categories: state.categories,
         monthlyBudget: state.monthlyBudget,
         theme: state.theme,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.expenses = (state.expenses || []).filter((e) => !e.id.startsWith('mock-exp-'));
+        }
+      },
     }
   )
 );

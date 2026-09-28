@@ -32,33 +32,31 @@ export function useSupabaseSync() {
 
       const store = useExpenseStore.getState();
 
-      // Nếu trên Cloud đã có dữ liệu -> Đồng bộ về máy này
-      if (remoteExpenses.length > 0 || remoteCategories.length > 0) {
-        useExpenseStore.setState((state) => {
-          // Merge thông minh theo id
-          const expenseMap = new Map<string, Expense>();
-          // Thêm local trước
-          state.expenses.forEach((e) => expenseMap.set(e.id, e));
-          // Remote ghi đè lên để cập nhật các thay đổi mới nhất từ máy khác
-          remoteExpenses.forEach((e) => expenseMap.set(e.id, e));
+      // Loại bỏ toàn bộ mock-exp dữ liệu mẫu
+      const cleanRemoteExpenses = remoteExpenses.filter((e) => !e.id.startsWith('mock-exp-'));
+      const cleanLocalExpenses = store.expenses.filter((e) => !e.id.startsWith('mock-exp-'));
 
-          const mergedExpenses = Array.from(expenseMap.values()).sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          );
+      useExpenseStore.setState((state) => {
+        const expenseMap = new Map<string, Expense>();
+        state.expenses
+          .filter((e) => !e.id.startsWith('mock-exp-'))
+          .forEach((e) => expenseMap.set(e.id, e));
+        cleanRemoteExpenses.forEach((e) => expenseMap.set(e.id, e));
 
-          return {
-            expenses: mergedExpenses,
-            categories: remoteCategories.length > 0 ? remoteCategories : state.categories,
-            monthlyBudget: remoteBudget || state.monthlyBudget,
-          };
-        });
-      } else if (store.expenses.length > 0) {
-        // Nếu trên Cloud chưa có gì nhưng local máy này có sẵn dữ liệu -> Đẩy local lên Cloud
-        await syncApi.upsertExpensesBatch(store.expenses);
-        for (const cat of store.categories) {
-          await syncApi.upsertCategory(cat);
-        }
-        await syncApi.saveMonthlyBudget(store.monthlyBudget);
+        const mergedExpenses = Array.from(expenseMap.values()).sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+
+        return {
+          expenses: mergedExpenses,
+          categories: remoteCategories.length > 0 ? remoteCategories : state.categories,
+          monthlyBudget: remoteBudget || state.monthlyBudget,
+        };
+      });
+
+      // Nếu có chi tiêu thật ở local mà remote chưa có -> Đẩy lên Cloud
+      if (cleanRemoteExpenses.length === 0 && cleanLocalExpenses.length > 0) {
+        await syncApi.upsertExpensesBatch(cleanLocalExpenses);
       }
 
       setSyncState('synced');

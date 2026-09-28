@@ -104,6 +104,13 @@ export const syncApi = {
     if (error) throw error;
   },
 
+  // Xóa toàn bộ expenses trên database
+  async clearAllExpenses() {
+    if (!isSupabaseConfigured) return;
+    const { error } = await supabase.from('expenses').delete().neq('id', '');
+    if (error) throw error;
+  },
+
   // Cập nhật ngân sách tháng
   async saveMonthlyBudget(amount: number) {
     const { error } = await supabase.from('app_settings').upsert({
