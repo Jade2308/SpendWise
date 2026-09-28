@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import type { Expense, Category } from '../types/expense';
 
 // Chuyển đổi dữ liệu từ Supabase sang Frontend Model (camelCase)
@@ -54,6 +54,9 @@ export const mapCategoryToDb = (cat: Category) => ({
 export const syncApi = {
   // Lấy toàn bộ dữ liệu ban đầu từ Supabase
   async fetchAll() {
+    if (!isSupabaseConfigured) {
+      return { expenses: [], categories: [], monthlyBudget: 15000000 };
+    }
     const [expensesRes, categoriesRes, settingsRes] = await Promise.all([
       supabase.from('expenses').select('*').order('date', { ascending: false }),
       supabase.from('categories').select('*'),

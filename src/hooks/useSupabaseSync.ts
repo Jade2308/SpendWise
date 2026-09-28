@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { useExpenseStore } from '../store/useExpenseStore';
 import { syncApi, mapDbToExpense, mapDbToCategory } from '../services/syncService';
 import type { Expense } from '../types/expense';
@@ -15,6 +15,11 @@ export function useSupabaseSync() {
 
   // Sync toàn bộ dữ liệu lần đầu khi mở app
   const syncInitialData = useCallback(async () => {
+    if (!isSupabaseConfigured) {
+      setSyncState('offline');
+      return;
+    }
+
     if (!navigator.onLine) {
       setSyncState('offline');
       return;
@@ -82,6 +87,13 @@ export function useSupabaseSync() {
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+
+    if (!isSupabaseConfigured) {
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
+    }
 
     // 3. Đăng ký kênh Supabase Realtime cho bảng expenses
     const channel = supabase
