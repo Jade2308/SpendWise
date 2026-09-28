@@ -19,14 +19,12 @@
     <script>
       (function() {
         try {
-          var stored = localStorage.getItem('spendwise-storage');
-          if (stored) {
-            var data = JSON.parse(stored);
-            if (data && data.state && data.state.theme === 'dark') {
-              document.documentElement.classList.add('dark');
-              var meta = document.querySelector('meta[name="theme-color"]');
-              if (meta) meta.setAttribute('content', '#020617');
-            }
+          localStorage.removeItem('spendwise-storage');
+          var theme = localStorage.getItem('spendwise-theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#020617');
           }
         } catch (e) {}
       })();

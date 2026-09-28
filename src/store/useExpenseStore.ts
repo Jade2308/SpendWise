@@ -1,9 +1,13 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import type { Expense, Category, FilterState } from '../types/expense';
 import { DEFAULT_CATEGORIES } from '../constants/categories';
 import { getMockExpenses } from '../constants/mockData';
 import { syncApi } from '../services/syncService';
+
+// Xóa sạch dữ liệu cũ trên máy (chỉ lưu trên Cloud Database)
+try {
+  localStorage.removeItem('spendwise-storage');
+} catch (e) {}
 
 interface ExpenseState {
   expenses: Expense[];
@@ -38,20 +42,19 @@ interface ExpenseState {
 
 const defaultFilter: FilterState = {
   searchQuery: '',
-  dateFilter: { range: 'this_month' },
+  dateFilter: { range: 'this_week' }, // Mặc định là tuần này
   categoryId: 'all',
   paymentMethod: 'all',
   sortBy: 'date_desc',
 };
 
 export const useExpenseStore = create<ExpenseState>()(
-  persist(
-    (set, get) => ({
-      expenses: [], // Mặc định danh sách trống (không dùng dữ liệu giả)
-      categories: DEFAULT_CATEGORIES,
-      monthlyBudget: 15000000, // 15 million VND default monthly budget
-      theme: 'light',
-      filter: defaultFilter,
+  (set, get) => ({
+    expenses: [], // Chỉ lưu trên database, không lưu trên máy
+    categories: DEFAULT_CATEGORIES,
+    monthlyBudget: 15000000,
+    theme: (typeof window !== 'undefined' && (localStorage.getItem('spendwise-theme') as 'light' | 'dark')) || 'light',
+    filter: defaultFilter,
 
       addExpense: (expenseData) => {
         const newExpense: Expense = {
@@ -193,6 +196,9 @@ export const useExpenseStore = create<ExpenseState>()(
 
       setTheme: (theme) => {
         set({ theme });
+        try {
+          localStorage.setItem('spendwise-theme', theme);
+        } catch (e) {}
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (theme === 'dark') {
           document.documentElement.classList.add('dark');
@@ -231,20 +237,6 @@ export const useExpenseStore = create<ExpenseState>()(
         });
         syncApi.clearAllExpenses().catch(console.warn);
       },
-    }),
-    {
-      name: 'spendwise-storage',
-      partialize: (state) => ({
-        expenses: (state.expenses || []).filter((e) => !e.id.startsWith('mock-exp-')),
-        categories: state.categories,
-        monthlyBudget: state.monthlyBudget,
-        theme: state.theme,
-      }),
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.expenses = (state.expenses || []).filter((e) => !e.id.startsWith('mock-exp-'));
-        }
-      },
-    }
-  )
+    })
 );
+

@@ -14,7 +14,6 @@ import { SpendingCalendar } from './components/analytics/SpendingCalendar';
 import { ExpenseFilters } from './components/expenses/ExpenseFilters';
 import { ExpenseList } from './components/expenses/ExpenseList';
 import { ExpenseFormModal } from './components/expenses/ExpenseFormModal';
-import { BudgetOverview } from './components/budget/BudgetOverview';
 import { DataBackupModal } from './components/settings/DataBackupModal';
 import { printFinancialReport } from './utils/exportExcel';
 import { useSupabaseSync } from './hooks/useSupabaseSync';
@@ -26,15 +25,12 @@ export function App() {
   const {
     expenses,
     categories,
-    monthlyBudget,
     filter,
     theme,
     addExpense,
     updateExpense,
     deleteExpense,
     duplicateExpense,
-    setMonthlyBudget,
-    setCategoryBudget,
     setFilter,
     resetFilter,
   } = useExpenseStore();
@@ -67,7 +63,6 @@ export function App() {
   } = useExpenseAnalytics({
     expenses,
     categories,
-    monthlyBudget,
     filter,
   });
 
@@ -127,7 +122,6 @@ export function App() {
             <StatSummaryCards
               summary={summary}
               categories={categories}
-              monthlyBudget={monthlyBudget}
             />
 
             {/* Primary Charts: Category Donut & Daily Trend */}
@@ -185,20 +179,7 @@ export function App() {
           </div>
         )}
 
-        {/* Tab 4: Budget Planner */}
-        {activeTab === 'budget' && (
-          <div className="animate-fadeIn">
-            <BudgetOverview
-              expenses={expenses}
-              categories={categories}
-              monthlyBudget={monthlyBudget}
-              onUpdateMonthlyBudget={setMonthlyBudget}
-              onUpdateCategoryBudget={setCategoryBudget}
-            />
-          </div>
-        )}
-
-        {/* Tab 5: Settings & Backup */}
+        {/* Tab 4: Settings & Backup */}
         {activeTab === 'settings' && (
           <div className="animate-fadeIn">
             <DataBackupModal />

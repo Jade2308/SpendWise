@@ -27,37 +27,18 @@ export function useSupabaseSync() {
 
     try {
       setSyncState('syncing');
-      const { expenses: remoteExpenses, categories: remoteCategories, monthlyBudget: remoteBudget } =
+      const { expenses: remoteExpenses, categories: remoteCategories } =
         await syncApi.fetchAll();
 
-      const store = useExpenseStore.getState();
+      // Kéo dữ liệu thuần túy từ Cloud Database
+      const cleanRemoteExpenses = remoteExpenses
+        .filter((e) => !e.id.startsWith('mock-exp-'))
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-      // Loại bỏ toàn bộ mock-exp dữ liệu mẫu
-      const cleanRemoteExpenses = remoteExpenses.filter((e) => !e.id.startsWith('mock-exp-'));
-      const cleanLocalExpenses = store.expenses.filter((e) => !e.id.startsWith('mock-exp-'));
-
-      useExpenseStore.setState((state) => {
-        const expenseMap = new Map<string, Expense>();
-        state.expenses
-          .filter((e) => !e.id.startsWith('mock-exp-'))
-          .forEach((e) => expenseMap.set(e.id, e));
-        cleanRemoteExpenses.forEach((e) => expenseMap.set(e.id, e));
-
-        const mergedExpenses = Array.from(expenseMap.values()).sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-
-        return {
-          expenses: mergedExpenses,
-          categories: remoteCategories.length > 0 ? remoteCategories : state.categories,
-          monthlyBudget: remoteBudget || state.monthlyBudget,
-        };
-      });
-
-      // Nếu có chi tiêu thật ở local mà remote chưa có -> Đẩy lên Cloud
-      if (cleanRemoteExpenses.length === 0 && cleanLocalExpenses.length > 0) {
-        await syncApi.upsertExpensesBatch(cleanLocalExpenses);
-      }
+      useExpenseStore.setState((state) => ({
+        expenses: cleanRemoteExpenses,
+        categories: remoteCategories.length > 0 ? remoteCategories : state.categories,
+      }));
 
       setSyncState('synced');
       setLastSyncedTime(new Date());

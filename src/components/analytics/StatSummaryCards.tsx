@@ -5,8 +5,7 @@ import {
   Coins,
   CalendarCheck,
   Flame,
-  ShieldCheck,
-  AlertTriangle,
+  PieChart,
   Minus,
 } from 'lucide-react';
 import type { AnalyticsSummary, Category } from '../../types/expense';
@@ -16,13 +15,12 @@ import { CategoryIcon } from '../common/CategoryIcon';
 interface StatSummaryCardsProps {
   summary: AnalyticsSummary;
   categories: Category[];
-  monthlyBudget: number;
+  monthlyBudget?: number;
 }
 
 export const StatSummaryCards: React.FC<StatSummaryCardsProps> = ({
   summary,
   categories,
-  monthlyBudget,
 }) => {
   const {
     totalSpend,
@@ -31,16 +29,12 @@ export const StatSummaryCards: React.FC<StatSummaryCardsProps> = ({
     projectedMonthEnd,
     changeRate,
     highestSingleExpense,
-    budgetUtilization,
     activeDaysCount,
   } = summary;
 
   const highestCat = categories.find(
     (c) => c.id === highestSingleExpense?.categoryId
   );
-
-  const remainingBudget = Math.max(0, monthlyBudget - totalSpend);
-  const isOverBudget = totalSpend > monthlyBudget;
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
@@ -156,67 +150,41 @@ export const StatSummaryCards: React.FC<StatSummaryCardsProps> = ({
         </div>
       </div>
 
-      {/* 4. Tiến Độ Ngân Sách */}
+      {/* 4. Danh Mục Chi Nhiều Nhất */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden transition-all hover:shadow-md">
         <div className="flex items-center justify-between mb-2 sm:mb-3">
           <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 truncate">
-            Ngân Sách
+            Nhóm Chi Lớn Nhất
           </span>
-          <div
-            className={`w-7 h-7 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 ${
-              isOverBudget
-                ? 'bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 animate-pulse'
-                : budgetUtilization > 85
-                ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400'
-                : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400'
-            }`}
-          >
-            {isOverBudget ? (
-              <AlertTriangle size={16} className="sm:size-[19px]" />
-            ) : (
-              <ShieldCheck size={16} className="sm:size-[19px]" />
-            )}
+          <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center shrink-0">
+            <PieChart size={16} className="sm:size-[19px]" />
           </div>
         </div>
 
-        <div className="flex items-baseline justify-between truncate">
-          <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-            {budgetUtilization}%
-          </div>
-          <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 truncate ml-1">
-            /{formatVND(monthlyBudget)}
-          </span>
+        <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">
+          {summary.topCategory ? formatVND(summary.topCategory.totalAmount) : '0 ₫'}
         </div>
 
-        {/* Progress Bar */}
-        <div className="mt-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 sm:h-2 overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${
-              isOverBudget
-                ? 'bg-rose-500'
-                : budgetUtilization > 80
-                ? 'bg-amber-500'
-                : 'bg-emerald-500'
-            }`}
-            style={{ width: `${Math.min(100, budgetUtilization)}%` }}
-          />
-        </div>
-
-        <div className="mt-2 flex items-center justify-between text-[10px] sm:text-xs truncate">
-          <span className="text-slate-500 dark:text-slate-400 truncate">
-            {isOverBudget ? 'Vượt:' : 'Còn:'}
-          </span>
-          <span
-            className={`font-bold truncate ${
-              isOverBudget
-                ? 'text-rose-600 dark:text-rose-400'
-                : 'text-emerald-600 dark:text-emerald-400'
-            }`}
-          >
-            {isOverBudget
-              ? formatVND(totalSpend - monthlyBudget)
-              : formatVND(remainingBudget)}
-          </span>
+        <div className="mt-2 sm:mt-3 flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">
+          {summary.topCategory ? (
+            <>
+              <div
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center shrink-0"
+                style={{ backgroundColor: summary.topCategory.category.bgLight }}
+              >
+                <CategoryIcon
+                  name={summary.topCategory.category.icon}
+                  size={10}
+                  color={summary.topCategory.category.color}
+                />
+              </div>
+              <span className="truncate font-semibold text-slate-700 dark:text-slate-300">
+                {summary.topCategory.category.name} ({summary.topCategory.percentage}%)
+              </span>
+            </>
+          ) : (
+            <span>Chưa có dữ liệu</span>
+          )}
         </div>
       </div>
     </div>

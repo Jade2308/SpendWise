@@ -3,11 +3,10 @@ import {
   BarChart3,
   ReceiptText,
   CalendarDays,
-  Target,
   Settings2,
 } from 'lucide-react';
 
-export type NavTab = 'analytics' | 'ledger' | 'calendar' | 'budget' | 'settings';
+export type NavTab = 'analytics' | 'ledger' | 'calendar' | 'settings';
 
 interface NavigationProps {
   activeTab: NavTab;
@@ -37,12 +36,6 @@ export const Navigation: React.FC<NavigationProps> = ({
       id: 'calendar' as NavTab,
       label: 'Lịch Nhiệt Chi Tiêu',
       icon: CalendarDays,
-      badge: null,
-    },
-    {
-      id: 'budget' as NavTab,
-      label: 'Hạn Mức Ngân Sách',
-      icon: Target,
       badge: null,
     },
     {

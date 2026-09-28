@@ -3,7 +3,6 @@ import {
   BarChart3,
   ReceiptText,
   CalendarDays,
-  Target,
   Settings2,
   Plus,
 } from 'lucide-react';
@@ -107,28 +106,22 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
           <span className="text-[11px] sm:text-xs font-semibold mt-1">Lịch</span>
         </button>
 
-        {/* Tab 4: Budget / Settings */}
+        {/* Tab 4: Settings */}
         <button
-          onClick={() => onTabChange(activeTab === 'settings' ? 'settings' : 'budget')}
+          onClick={() => onTabChange('settings')}
           className={`flex flex-col items-center justify-center h-full transition-colors active:scale-95 ${
-            activeTab === 'budget' || activeTab === 'settings'
+            activeTab === 'settings'
               ? 'text-emerald-600 dark:text-emerald-400 font-bold'
               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <div className="relative">
-            {activeTab === 'settings' ? (
-              <Settings2 size={23} className="stroke-[2.5]" />
-            ) : (
-              <Target size={23} className={activeTab === 'budget' ? 'stroke-[2.5]' : 'stroke-2'} />
-            )}
-            {(activeTab === 'budget' || activeTab === 'settings') && (
+            <Settings2 size={23} className={activeTab === 'settings' ? 'stroke-[2.5]' : 'stroke-2'} />
+            {activeTab === 'settings' && (
               <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />
             )}
           </div>
-          <span className="text-[11px] sm:text-xs font-semibold mt-1">
-            {activeTab === 'settings' ? 'Cài đặt' : 'Ngân sách'}
-          </span>
+          <span className="text-[11px] sm:text-xs font-semibold mt-1">Cài đặt</span>
         </button>
       </div>
     </div>

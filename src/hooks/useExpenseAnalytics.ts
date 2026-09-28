@@ -27,14 +27,14 @@ import { PAYMENT_METHODS } from '../constants/paymentMethods';
 interface UseExpenseAnalyticsProps {
   expenses: Expense[];
   categories: Category[];
-  monthlyBudget: number;
+  monthlyBudget?: number;
   filter: FilterState;
 }
 
 export function useExpenseAnalytics({
   expenses,
   categories,
-  monthlyBudget,
+  monthlyBudget = 0,
   filter,
 }: UseExpenseAnalyticsProps) {
   // 1. Calculate Active Date Range Bounds
