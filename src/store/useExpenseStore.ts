@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { Expense, Category, FilterState } from '../types/expense';
 import { DEFAULT_CATEGORIES } from '../constants/categories';
 import { getMockExpenses } from '../constants/mockData';
+import { syncApi } from '../services/syncService';
 
 interface ExpenseState {
   expenses: Expense[];
@@ -61,18 +62,38 @@ export const useExpenseStore = create<ExpenseState>()(
         set((state) => ({
           expenses: [newExpense, ...state.expenses],
         }));
+        // Đồng bộ ngầm lên Supabase (0ms UI lag)
+        syncApi.upsertExpense(newExpense).catch((err) => {
+          console.warn('Sync expense failed (will retry):', err);
+        });
       },
 
       updateExpense: (id, updated) => {
-        set((state) => ({
-          expenses: state.expenses.map((e) => (e.id === id ? { ...e, ...updated } : e)),
-        }));
+        let updatedItem: Expense | undefined;
+        set((state) => {
+          const next = state.expenses.map((e) => {
+            if (e.id === id) {
+              updatedItem = { ...e, ...updated };
+              return updatedItem;
+            }
+            return e;
+          });
+          return { expenses: next };
+        });
+        if (updatedItem) {
+          syncApi.upsertExpense(updatedItem).catch((err) => {
+            console.warn('Sync update expense failed:', err);
+          });
+        }
       },
 
       deleteExpense: (id) => {
         set((state) => ({
           expenses: state.expenses.filter((e) => e.id !== id),
         }));
+        syncApi.deleteExpense(id).catch((err) => {
+          console.warn('Sync delete expense failed:', err);
+        });
       },
 
       duplicateExpense: (id) => {
@@ -87,6 +108,9 @@ export const useExpenseStore = create<ExpenseState>()(
         set((state) => ({
           expenses: [cloned, ...state.expenses],
         }));
+        syncApi.upsertExpense(cloned).catch((err) => {
+          console.warn('Sync duplicate expense failed:', err);
+        });
       },
 
       addCategory: (categoryData) => {
@@ -98,30 +122,63 @@ export const useExpenseStore = create<ExpenseState>()(
         set((state) => ({
           categories: [...state.categories, newCat],
         }));
+        syncApi.upsertCategory(newCat).catch((err) => {
+          console.warn('Sync add category failed:', err);
+        });
       },
 
       updateCategory: (id, updated) => {
-        set((state) => ({
-          categories: state.categories.map((c) => (c.id === id ? { ...c, ...updated } : c)),
-        }));
+        let updatedCat: Category | undefined;
+        set((state) => {
+          const next = state.categories.map((c) => {
+            if (c.id === id) {
+              updatedCat = { ...c, ...updated };
+              return updatedCat;
+            }
+            return c;
+          });
+          return { categories: next };
+        });
+        if (updatedCat) {
+          syncApi.upsertCategory(updatedCat).catch((err) => {
+            console.warn('Sync update category failed:', err);
+          });
+        }
       },
 
       deleteCategory: (id) => {
         set((state) => ({
           categories: state.categories.filter((c) => c.id !== id),
         }));
+        syncApi.deleteCategory(id).catch((err) => {
+          console.warn('Sync delete category failed:', err);
+        });
       },
 
       setMonthlyBudget: (amount) => {
         set({ monthlyBudget: amount });
+        syncApi.saveMonthlyBudget(amount).catch((err) => {
+          console.warn('Sync monthly budget failed:', err);
+        });
       },
 
       setCategoryBudget: (categoryId, limit) => {
-        set((state) => ({
-          categories: state.categories.map((c) =>
-            c.id === categoryId ? { ...c, budgetLimit: limit } : c
-          ),
-        }));
+        let updatedCat: Category | undefined;
+        set((state) => {
+          const next = state.categories.map((c) => {
+            if (c.id === categoryId) {
+              updatedCat = { ...c, budgetLimit: limit };
+              return updatedCat;
+            }
+            return c;
+          });
+          return { categories: next };
+        });
+        if (updatedCat) {
+          syncApi.upsertCategory(updatedCat).catch((err) => {
+            console.warn('Sync category budget failed:', err);
+          });
+        }
       },
 
       setFilter: (updatedFilter) => {
@@ -152,17 +209,20 @@ export const useExpenseStore = create<ExpenseState>()(
       },
 
       loadMockData: () => {
+        const mock = getMockExpenses();
         set({
-          expenses: getMockExpenses(),
+          expenses: mock,
           categories: DEFAULT_CATEGORIES,
           monthlyBudget: 15000000,
         });
+        syncApi.upsertExpensesBatch(mock).catch(console.warn);
       },
 
       importExpenses: (imported) => {
         set((state) => ({
           expenses: [...imported, ...state.expenses],
         }));
+        syncApi.upsertExpensesBatch(imported).catch(console.warn);
       },
 
       clearAllData: () => {

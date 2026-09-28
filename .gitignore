@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment & Credentials
+.env
+.env.*
+!.env.example
+SUPABASE_CREDENTIALS.md

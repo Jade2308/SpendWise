@@ -18,9 +18,12 @@ import { ExpenseFormModal } from './components/expenses/ExpenseFormModal';
 import { BudgetOverview } from './components/budget/BudgetOverview';
 import { DataBackupModal } from './components/settings/DataBackupModal';
 import { printFinancialReport } from './utils/exportExcel';
+import { useSupabaseSync } from './hooks/useSupabaseSync';
 import type { Expense } from './types/expense';
 
 export function App() {
+  const { syncState, lastSyncedTime, manualSync, errorMessage } = useSupabaseSync();
+
   const {
     expenses,
     categories,
@@ -104,6 +107,10 @@ export function App() {
         onOpenAddExpense={handleOpenAddExpense}
         onPrintReport={handlePrintReport}
         periodLabel={periodLabel}
+        syncState={syncState}
+        lastSyncedTime={lastSyncedTime}
+        onManualSync={manualSync}
+        errorMessage={errorMessage}
       />
 
       {/* Desktop Navigation Tabs (Hidden on mobile) */}

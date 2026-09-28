@@ -10,11 +10,17 @@ import {
 } from 'lucide-react';
 import { useExpenseStore } from '../../store/useExpenseStore';
 import type { DateRangeOption } from '../../types/expense';
+import { SyncStatusBadge } from './SyncStatusBadge';
+import type { SyncState } from '../../hooks/useSupabaseSync';
 
 interface HeaderProps {
   onOpenAddExpense: () => void;
   onPrintReport: () => void;
   periodLabel: string;
+  syncState: SyncState;
+  lastSyncedTime: Date | null;
+  onManualSync: () => void;
+  errorMessage: string | null;
 }
 
 const DATE_RANGE_OPTIONS: { id: DateRangeOption; label: string }[] = [
@@ -30,6 +36,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAddExpense,
   onPrintReport,
   periodLabel,
+  syncState,
+  lastSyncedTime,
+  onManualSync,
+  errorMessage,
 }) => {
   const { theme, toggleTheme, filter, setFilter, loadMockData } = useExpenseStore();
 
@@ -65,6 +75,14 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Quick Actions (Right) */}
             <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* Cloud Realtime Sync Status Badge */}
+              <SyncStatusBadge
+                syncState={syncState}
+                lastSyncedTime={lastSyncedTime}
+                onManualSync={onManualSync}
+                errorMessage={errorMessage}
+              />
+
               <button
                 onClick={() => {
                   if (window.confirm('Tải lại dữ liệu mẫu (35+ giao dịch)?')) {
