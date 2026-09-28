@@ -19,7 +19,6 @@ import { printFinancialReport } from './utils/exportExcel';
 import { useSupabaseSync } from './hooks/useSupabaseSync';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { InstallAppModal } from './components/common/InstallAppModal';
-import { InstallAppBanner } from './components/common/InstallAppBanner';
 import type { Expense } from './types/expense';
 
 export function App() {
@@ -214,12 +213,6 @@ export function App() {
           </div>
         )}
       </main>
-
-      {/* Floating Install App Banner for Mobile / Uninstalled Desktop */}
-      <InstallAppBanner
-        onInstall={handleOpenInstall}
-        isInstalled={isInstalled}
-      />
 
       {/* Install App Guide Modal */}
       <InstallAppModal
