@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   WalletCards,
   Plus,
@@ -6,6 +5,7 @@ import {
   Sun,
   Printer,
   Calendar,
+  Download,
 } from 'lucide-react';
 import { useExpenseStore } from '../../store/useExpenseStore';
 import type { DateRangeOption } from '../../types/expense';
@@ -20,6 +20,8 @@ interface HeaderProps {
   lastSyncedTime: Date | null;
   onManualSync: () => void;
   errorMessage: string | null;
+  onOpenInstall: () => void;
+  isInstalled: boolean;
 }
 
 const DATE_RANGE_OPTIONS: { id: DateRangeOption; label: string }[] = [
@@ -39,6 +41,8 @@ export const Header: React.FC<HeaderProps> = ({
   lastSyncedTime,
   onManualSync,
   errorMessage,
+  onOpenInstall,
+  isInstalled,
 }) => {
   const { theme, toggleTheme, filter, setFilter } = useExpenseStore();
 
@@ -81,6 +85,18 @@ export const Header: React.FC<HeaderProps> = ({
                 onManualSync={onManualSync}
                 errorMessage={errorMessage}
               />
+
+              {/* Install PWA Button */}
+              {!isInstalled && (
+                <button
+                  onClick={onOpenInstall}
+                  title="Tải ứng dụng SpendWise về máy"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-300/80 dark:border-emerald-800/80 font-bold text-xs transition-all active:scale-95 shadow-xs"
+                >
+                  <Download size={16} className="stroke-[2.5]" />
+                  <span className="hidden xs:inline sm:inline">Tải App</span>
+                </button>
+              )}
 
               <button
                 onClick={onPrintReport}

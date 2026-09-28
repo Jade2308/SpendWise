@@ -17,10 +17,22 @@ import { ExpenseFormModal } from './components/expenses/ExpenseFormModal';
 import { DataBackupModal } from './components/settings/DataBackupModal';
 import { printFinancialReport } from './utils/exportExcel';
 import { useSupabaseSync } from './hooks/useSupabaseSync';
+import { usePWAInstall } from './hooks/usePWAInstall';
+import { InstallAppModal } from './components/common/InstallAppModal';
+import { InstallAppBanner } from './components/common/InstallAppBanner';
 import type { Expense } from './types/expense';
 
 export function App() {
   const { syncState, lastSyncedTime, manualSync, errorMessage } = useSupabaseSync();
+  const {
+    canPromptNative,
+    isInstalled,
+    isIOS,
+    isSamsungBrowser,
+    promptInstall,
+  } = usePWAInstall();
+
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
 
   const {
     expenses,
@@ -71,6 +83,17 @@ export function App() {
     setIsExpenseModalOpen(true);
   };
 
+  const handleOpenInstall = async () => {
+    if (canPromptNative) {
+      const outcome = await promptInstall();
+      if (outcome === 'manual_guide') {
+        setIsInstallModalOpen(true);
+      }
+    } else {
+      setIsInstallModalOpen(true);
+    }
+  };
+
   const handleOpenEditExpense = (expense: Expense) => {
     setEditingExpense(expense);
     setIsExpenseModalOpen(true);
@@ -104,6 +127,8 @@ export function App() {
         lastSyncedTime={lastSyncedTime}
         onManualSync={manualSync}
         errorMessage={errorMessage}
+        onOpenInstall={handleOpenInstall}
+        isInstalled={isInstalled}
       />
 
       {/* Desktop Navigation Tabs (Hidden on mobile) */}
@@ -182,10 +207,29 @@ export function App() {
         {/* Tab 4: Settings & Backup */}
         {activeTab === 'settings' && (
           <div className="animate-fadeIn">
-            <DataBackupModal />
+            <DataBackupModal
+              onOpenInstall={handleOpenInstall}
+              isInstalled={isInstalled}
+            />
           </div>
         )}
       </main>
+
+      {/* Floating Install App Banner for Mobile / Uninstalled Desktop */}
+      <InstallAppBanner
+        onInstall={handleOpenInstall}
+        isInstalled={isInstalled}
+      />
+
+      {/* Install App Guide Modal */}
+      <InstallAppModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        isIOS={isIOS}
+        isSamsungBrowser={isSamsungBrowser}
+        onNativeInstall={promptInstall}
+        canPromptNative={canPromptNative}
+      />
 
       {/* Mobile-Native Bottom Navigation Bar */}
       <BottomNavigation
@@ -212,7 +256,7 @@ export function App() {
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>SpendWise © 2026 — Sổ Quản Lý & Thống Kê Chi Tiêu Thông Minh</span>
           <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-            ● Dữ liệu lưu an toàn trên máy (Offline-first)
+            ● Dữ liệu đồng bộ trực tiếp lên Cloud Database (Supabase) an toàn
           </span>
         </div>
       </footer>
@@ -221,3 +265,4 @@ export function App() {
 }
 
 export default App;
+

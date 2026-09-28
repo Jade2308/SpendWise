@@ -46,7 +46,15 @@ const PRESET_ICONS = [
   'Tag',
 ];
 
-export const DataBackupModal: React.FC = () => {
+interface DataBackupModalProps {
+  onOpenInstall?: () => void;
+  isInstalled?: boolean;
+}
+
+export const DataBackupModal: React.FC<DataBackupModalProps> = ({
+  onOpenInstall,
+  isInstalled = false,
+}) => {
   const {
     expenses,
     categories,
@@ -124,18 +132,51 @@ export const DataBackupModal: React.FC = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto">
-      {/* Privacy & Offline Banner */}
-      <div className="bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-emerald-600/10 border border-emerald-200/80 dark:border-emerald-900/60 p-4 sm:p-5 rounded-3xl flex items-start gap-3 sm:gap-4">
+      {/* Mobile App Installation Banner */}
+      <div className="bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-emerald-600/10 border border-emerald-300/80 dark:border-emerald-800/80 p-4 sm:p-5 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 sm:gap-4">
+        <div className="flex items-center gap-3.5">
+          <img
+            src="/icon-192.png"
+            alt="SpendWise"
+            className="w-12 h-12 rounded-2xl shadow-md border border-emerald-500/40 shrink-0"
+          />
+          <div>
+            <div className="flex items-center gap-2">
+              <h4 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+                Cài Đặt SpendWise Lên Điện Thoại
+              </h4>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                PWA
+              </span>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+              Hỗ trợ Samsung Internet, Chrome Android & iPhone Safari. Mở 1 chạm từ màn hình, toàn màn hình như ứng dụng tải từ Store.
+            </p>
+          </div>
+        </div>
+
+        {onOpenInstall && (
+          <button
+            onClick={onOpenInstall}
+            className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/25 hover:from-emerald-700 hover:to-teal-700 active:scale-95 transition-all"
+          >
+            <Download size={16} className="stroke-[2.5]" />
+            <span>{isInstalled ? 'Xem lại hướng dẫn' : 'Tải & Cài Đặt Ngay'}</span>
+          </button>
+        )}
+      </div>
+
+      {/* Cloud Sync & Security Banner */}
+      <div className="bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 p-4 sm:p-5 rounded-3xl flex items-start gap-3 sm:gap-4">
         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-600/25">
           <ShieldCheck size={20} />
         </div>
         <div>
           <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
-            Bảo Mật Tuyệt Đối & Lưu Trữ Trên Máy (Offline)
+            Lưu Trữ Hoàn Toàn Trên Cloud Database (Supabase)
           </h4>
           <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-            SpendWise lưu trữ 100% dữ liệu chi tiêu trên điện thoại của bạn.
-            Không có máy chủ trung gian thu thập dữ liệu cá nhân. Bạn có thể xuất Excel hoặc sao lưu JSON bất cứ lúc nào.
+            Dữ liệu được lưu trữ trực tuyến an toàn trên Supabase Cloud Database. Thiết bị của bạn không lưu trữ dữ liệu tài chính vào bộ nhớ máy, giúp bảo mật tuyệt đối và đồng bộ dữ liệu tức thời giữa máy tính và điện thoại.
           </p>
         </div>
       </div>
