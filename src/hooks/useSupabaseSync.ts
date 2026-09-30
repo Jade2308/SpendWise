@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { useExpenseStore } from '../store/useExpenseStore';
 import { syncApi, mapDbToExpense, mapDbToCategory } from '../services/syncService';
+import { sortCategoriesWithFoodFirst } from '../constants/categories';
 import type { Expense } from '../types/expense';
 
 export type SyncState = 'synced' | 'syncing' | 'offline' | 'error';
@@ -35,9 +36,11 @@ export function useSupabaseSync() {
         .filter((e) => !e.id.startsWith('mock-exp-'))
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+      const sortedRemoteCategories = sortCategoriesWithFoodFirst(remoteCategories);
+
       useExpenseStore.setState((state) => ({
         expenses: cleanRemoteExpenses,
-        categories: remoteCategories.length > 0 ? remoteCategories : state.categories,
+        categories: sortedRemoteCategories.length > 0 ? sortedRemoteCategories : state.categories,
       }));
 
       setSyncState('synced');
@@ -119,7 +122,7 @@ export function useSupabaseSync() {
               const updatedCats = exists
                 ? state.categories.map((c) => (c.id === incomingCat.id ? incomingCat : c))
                 : [...state.categories, incomingCat];
-              return { categories: updatedCats };
+              return { categories: sortCategoriesWithFoodFirst(updatedCats) };
             });
           } else if (eventType === 'DELETE') {
             useExpenseStore.setState((state) => ({

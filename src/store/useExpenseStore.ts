@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Expense, Category, FilterState } from '../types/expense';
-import { DEFAULT_CATEGORIES } from '../constants/categories';
+import { DEFAULT_CATEGORIES, sortCategoriesWithFoodFirst } from '../constants/categories';
 import { getMockExpenses } from '../constants/mockData';
 import { syncApi } from '../services/syncService';
 
@@ -123,7 +123,7 @@ export const useExpenseStore = create<ExpenseState>()(
           bgLight: '#f1f5f9',
         };
         set((state) => ({
-          categories: [...state.categories, newCat],
+          categories: sortCategoriesWithFoodFirst([...state.categories, newCat]),
         }));
         syncApi.upsertCategory(newCat).catch((err) => {
           console.warn('Sync add category failed:', err);
@@ -140,7 +140,7 @@ export const useExpenseStore = create<ExpenseState>()(
             }
             return c;
           });
-          return { categories: next };
+          return { categories: sortCategoriesWithFoodFirst(next) };
         });
         if (updatedCat) {
           syncApi.upsertCategory(updatedCat).catch((err) => {

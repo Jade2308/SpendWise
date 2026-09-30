@@ -82,3 +82,27 @@ export const DEFAULT_CATEGORIES: Category[] = [
     budgetLimit: 1000000,
   },
 ];
+
+/**
+ * Đưa danh mục Ăn uống lên vị trí đầu danh sách
+ */
+export const sortCategoriesWithFoodFirst = (categories: Category[]): Category[] => {
+  return [...categories].sort((a, b) => {
+    const isAFood = a.id === 'food' || a.name.toLowerCase().includes('ăn uống');
+    const isBFood = b.id === 'food' || b.name.toLowerCase().includes('ăn uống');
+    if (isAFood && !isBFood) return -1;
+    if (!isAFood && isBFood) return 1;
+    return 0;
+  });
+};
+
+/**
+ * Lấy danh mục Ăn uống mặc định
+ */
+export const getFoodCategory = (categories: Category[]): Category | undefined => {
+  return (
+    categories.find((c) => c.id === 'food') ||
+    categories.find((c) => c.name.toLowerCase().includes('ăn uống')) ||
+    categories[0]
+  );
+};

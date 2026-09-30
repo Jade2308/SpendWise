@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   X,
   Plus,
@@ -11,6 +11,7 @@ import type { Expense, Category, PaymentMethodType } from '../../types/expense';
 import { formatVND, parseVND } from '../../utils/currency';
 import { getTodayString } from '../../utils/date';
 import { CategoryIcon } from '../common/CategoryIcon';
+import { sortCategoriesWithFoodFirst, getFoodCategory } from '../../constants/categories';
 
 interface ExpenseFormModalProps {
   isOpen: boolean;
@@ -37,6 +38,11 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
   const [receiptImage, setReceiptImage] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string>('');
 
+  // Sắp xếp danh mục với "Ăn uống" luôn lên đầu danh sách chọn
+  const sortedCategories = useMemo(() => {
+    return sortCategoriesWithFoodFirst(categories);
+  }, [categories]);
+
   useEffect(() => {
     if (initialData) {
       setRawAmount(initialData.amount ? initialData.amount.toString() : '');
@@ -49,7 +55,8 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
       setReceiptImage(initialData.receiptImage);
     } else {
       setRawAmount('');
-      setCategoryId(categories[0]?.id || '');
+      const defaultCategory = getFoodCategory(sortedCategories);
+      setCategoryId(defaultCategory?.id || '');
       setDate(getTodayString());
       setPaymentMethod('cash');
       setNote('');
@@ -58,7 +65,7 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
       setReceiptImage(undefined);
     }
     setError('');
-  }, [initialData, isOpen, categories]);
+  }, [initialData, isOpen, sortedCategories]);
 
   if (!isOpen) return null;
 
@@ -180,7 +187,7 @@ export const ExpenseFormModal: React.FC<ExpenseFormModalProps> = ({
               Danh mục chi tiêu <span className="text-rose-500">*</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto pr-1">
-              {categories.map((cat) => {
+              {sortedCategories.map((cat) => {
                 const isSelected = categoryId === cat.id;
                 return (
                   <button
